@@ -9,12 +9,12 @@ const string response = "+PONG\r\n";
 
 var server = new TcpListener(IPAddress.Any, 6379);
 server.Start();
-var socket = await server.AcceptSocketAsync();
 
 await Task.Run(async () =>
 {
     while (true)
     {
+        var socket = await server.AcceptSocketAsync();
         var buffer = new byte[1024];
         var received = await socket.ReceiveAsync(buffer, SocketFlags.None);
         var msg = Encoding.ASCII.GetString(buffer, 0, received);
