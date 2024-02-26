@@ -1,15 +1,13 @@
 using System.Net;
 using System.Net.Sockets;
 using System.Text;
+using codecrafters_redis;
 
 
 Console.WriteLine("Logs from your program will appear here!");
 
-var response = Encoding.UTF8.GetBytes("+PONG\r\n");
-
 var server = new TcpListener(IPAddress.Any, 6379);
 server.Start();
-
 
 while (true)
 {
@@ -23,9 +21,11 @@ while (true)
         while (received > 0)
         {
             var _ = Encoding.UTF8.GetString(buffer);
-            await stream.WriteAsync(response);
+            var expression = Utils.RespDecode(_);
+            var message = expression.GetMessage();
+            await stream.WriteAsync(Encoding.ASCII.GetBytes(message));
             received = stream.Read(buffer, 0, buffer.Length);
+            
         }
-        
     });
 }
