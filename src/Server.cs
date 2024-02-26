@@ -11,20 +11,19 @@ var store = new Store();
 while (true)
 {
     var client = await server.AcceptTcpClientAsync();
-    _ = HandleClient(client);
-}
-
-async Task HandleClient(TcpClient client)
-{
-    var buffer = new byte[1024];
-    var stream = client.GetStream();
-    var received = stream.Read(buffer, 0, buffer.Length);
-    while (received > 0)
+    Task.Run(async () =>
     {
-        var data = Encoding.UTF8.GetString(buffer);
-        var expression = Resp.Decode(data, store);
-        var message = expression.GetMessage();
-        await stream.WriteAsync(Encoding.UTF8.GetBytes(message));
-        received = stream.Read(buffer, 0, buffer.Length);
-    }
+        var buffer = new byte[1024];
+        var stream = client.GetStream();
+        var received = stream.Read(buffer, 0, buffer.Length);
+        while (received > 0)
+        {
+            var data = Encoding.UTF8.GetString(buffer);
+            var expression = Resp.Decode(data, store);
+            var message = expression.GetMessage();
+            await stream.WriteAsync(Encoding.UTF8.GetBytes(message));
+            received = stream.Read(buffer, 0, buffer.Length);
+        }
+    });
+    
 }
