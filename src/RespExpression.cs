@@ -30,7 +30,7 @@ public class RespExpression
 
     public string GetMessage() => Command switch
     {
-        Command.Ping => Resp.SimpleEncode("Pong"),
+        Command.Ping => Resp.SimpleEncode("PONG"),
         Command.Echo => Resp.BulkEncode(_value[4]),
         Command.Set => HandleSetCommand(),
         Command.Get => HandleGetCommand(),
