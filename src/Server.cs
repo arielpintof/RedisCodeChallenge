@@ -6,8 +6,11 @@ using codecrafters_redis;
 
 Console.WriteLine("Logs from your program will appear here!");
 
+//var response = Encoding.UTF8.GetBytes("+PONG\r\n");
+
 var server = new TcpListener(IPAddress.Any, 6379);
 server.Start();
+
 
 while (true)
 {
@@ -21,13 +24,13 @@ while (true)
         while (received > 0)
         {
             var _ = Encoding.UTF8.GetString(buffer);
-            Console.WriteLine($"Message received: {_}");
             var expression = Utils.RespDecode(_);
             var message = expression.GetMessage();
-            Console.WriteLine($"Message to send: {message}");
-            await stream.WriteAsync(Encoding.ASCII.GetBytes(message));
+            await stream.WriteAsync(Encoding.UTF8.GetBytes(message));
             received = stream.Read(buffer, 0, buffer.Length);
             
         }
+        
+        
     });
 }

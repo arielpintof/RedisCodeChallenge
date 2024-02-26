@@ -20,8 +20,8 @@ public class RespExpression
 
     public string GetMessage() => Command switch
     {
-        Command.Echo => "+PONG\r\n",
-        Command.Ping => Utils.RespEncode(_value[4]),
+        Command.Ping => "+PONG\r\n",
+        Command.Echo => Utils.RespEncode(_value[4]),
         _ => throw new ArgumentOutOfRangeException()
     };
 }
