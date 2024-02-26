@@ -21,8 +21,10 @@ while (true)
         while (received > 0)
         {
             var _ = Encoding.UTF8.GetString(buffer);
+            Console.WriteLine($"Message received: {_}");
             var expression = Utils.RespDecode(_);
             var message = expression.GetMessage();
+            Console.WriteLine($"Message to send: {message}");
             await stream.WriteAsync(Encoding.ASCII.GetBytes(message));
             received = stream.Read(buffer, 0, buffer.Length);
             
