@@ -38,7 +38,7 @@ public class RespExpression
     };
 
     private string HandleSetCommand() => 
-        _store!.Set(_value[3], _value[4]) ? Resp.SimpleEncode("OK") : "null";
+        _store!.Set(_value[4], _value[6]) ? Resp.SimpleEncode("OK") : "null";
     
     private string HandleGetCommand() => Resp.BulkEncode(_store!.GetValue(_value[3]));
     
