@@ -3,5 +3,7 @@
 public enum Command
 {
     Ping,
-    Echo
+    Echo,
+    Set,
+    Get,
 }
