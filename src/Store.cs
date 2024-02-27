@@ -14,7 +14,7 @@ public class Store
 
     public string? GetValue(string key)
     {
-        if (!_storeValues.TryGetValue(key, out var value)) return null;
+        if (!_storeValues.TryGetValue(key, out var value)) return "";
 
         if (value.Expiration <= 0 || 
             value.CreatedAt.AddMilliseconds(value.Expiration) >= DateTimeOffset.Now)
@@ -24,7 +24,7 @@ public class Store
 
         _storeValues.TryRemove(key, out _);
 
-        return null;
+        return "";
 
     } 
     
