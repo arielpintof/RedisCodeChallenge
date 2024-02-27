@@ -39,7 +39,6 @@ public class RespExpression
 
     private string HandleSetCommand()
     {
-        Console.Write(CommandOption);
         return _store!.Set(Key, Value) ? Resp.SimpleEncode("OK") : "null";
     }
 
