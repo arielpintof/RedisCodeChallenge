@@ -7,9 +7,10 @@ using codecrafters_redis;
 var server = new TcpListener(IPAddress.Any, 6379);
 server.Start();
 
-var store = new Store();
+
 while (true)
 {
+    var store = new Store();
     var client = await server.AcceptTcpClientAsync();
     Task.Run(async () =>
     {
