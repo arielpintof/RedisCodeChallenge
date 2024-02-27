@@ -6,9 +6,9 @@ using codecrafters_redis;
 
 public static class Server
 {
-    public static async Task Main(List<string> args)
-    {
-        var port = args.Count >= 2 ? int.Parse(args.ElementAt(1)) : 6379;
+    public static async Task Main(string[] args)
+    {   
+        var port = args.Length >= 2 ? int.Parse(args.ElementAt(1)) : 6379;
         var server = new TcpListener(IPAddress.Any, port);
 
         server.Start();
