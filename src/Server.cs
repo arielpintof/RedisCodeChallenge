@@ -19,8 +19,8 @@ while (true)
         while (received > 0)
         {
             var data = Encoding.UTF8.GetString(buffer);
-            var expression = Resp.Decode(data, store);
-            var message = expression.GetMessage();
+            var expression = Resp.Decode(data);
+            var message = expression.GetMessage(store);
             await stream.WriteAsync(Encoding.UTF8.GetBytes(message));
             received = stream.Read(buffer, 0, buffer.Length);
         }

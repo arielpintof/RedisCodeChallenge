@@ -5,12 +5,10 @@ namespace codecrafters_redis;
 public class RespExpression
 {
     private readonly ImmutableArray<string> _value;
-    private readonly Store? _store;
 
-    public RespExpression(IEnumerable<string> value, Store store)
+    public RespExpression(IEnumerable<string> value)
     {
         _value = value.ToImmutableArray();
-        _store = store;
     }
 
     private Command Command => _value[2] switch
@@ -28,32 +26,32 @@ public class RespExpression
         _ => throw new ArgumentOutOfRangeException()
     };
 
-    public string GetMessage() => Command switch
+    public string GetMessage(Store store) => Command switch
     {
         Command.Ping => Resp.SimpleEncode("PONG"),
         Command.Echo => Resp.BulkEncode(_value[4]),
-        Command.Set => HandleSetCommand(),
-        Command.Get => HandleGetCommand(),
+        Command.Set => HandleSetCommand(store),
+        Command.Get => HandleGetCommand(store),
         _ => throw new ArgumentOutOfRangeException()
     };
 
-    private string HandleSetCommand()
+    private string HandleSetCommand(Store store)
     {
-        return _store!.Set(Key, Value) ? Resp.SimpleEncode("OK") : "null";
+        return store.Set(Key, Value) ? Resp.SimpleEncode("OK") : "null";
     }
 
-    private async Task ExpireSetCommand()
+    private async Task ExpireSetCommand(Store store)
     {
         if (CommandOption == CommandOption.Px)
         {
             await Task.Delay(int.Parse(_value[10]));
-            _store!.Remove(Key);
+            store!.Remove(Key);
         }
     }
 
-    private string HandleGetCommand()
+    private string HandleGetCommand(Store store)
     {
-        var value = _store!.GetValue(Key);
+        var value = store.GetValue(Key);
         return value.Length > 0 ? Resp.BulkEncode(value) : Resp.NullEncode();
     }
     

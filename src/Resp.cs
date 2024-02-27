@@ -4,9 +4,9 @@ public static class Resp
 {
     private const string Separator = "\r\n";
 
-    public static RespExpression Decode(string value, Store store)
+    public static RespExpression Decode(string value)
     {
-        return new RespExpression(value.Split(Separator), store);
+        return new RespExpression(value.Split(Separator));
     }
 
     public static string BulkEncode(string value)
