@@ -21,6 +21,6 @@ public static class Resp
 
     public static string NullEncode()
     {
-        return $"-1{Separator}";
+        return $"$-1{Separator}";
     }
 }
