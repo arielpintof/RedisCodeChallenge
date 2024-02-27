@@ -20,7 +20,7 @@ public class Store
             return value.Value;
         }
 
-        Remove(key);
+        _storeValues.Remove(key, out _);
 
         return null;
 
