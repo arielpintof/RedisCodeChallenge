@@ -4,27 +4,34 @@ using System.Text;
 using codecrafters_redis;
 
 
-var server = new TcpListener(IPAddress.Any, 6379);
-server.Start();
-
-
-while (true)
+public static class Server
 {
-    var store = new Store();
-    var client = await server.AcceptTcpClientAsync();
-    Task.Run(async () =>
+    public static async Task Main(string[] args)
     {
-        var buffer = new byte[1024];
-        var stream = client.GetStream();
-        var received = stream.Read(buffer, 0, buffer.Length);
-        while (received > 0)
+        var server = new TcpListener(IPAddress.Any, int.Parse(args[1]));
+
+        server.Start();
+
+        while (true)
         {
-            var data = Encoding.UTF8.GetString(buffer);
-            var expression = Resp.Decode(data);
-            var message = expression.GetMessage(store);
-            await stream.WriteAsync(Encoding.UTF8.GetBytes(message));
-            received = stream.Read(buffer, 0, buffer.Length);
-        }
-    });
+            var store = new Store();
+            var client = await server.AcceptTcpClientAsync();
+            Task.Run(async () =>
+            {
+                var buffer = new byte[1024];
+                var stream = client.GetStream();
+                var received = stream.Read(buffer, 0, buffer.Length);
+                while (received > 0)
+                {
+                    var data = Encoding.UTF8.GetString(buffer);
+                    var expression = Resp.Decode(data);
+                    var message = expression.GetMessage(store);
+                    await stream.WriteAsync(Encoding.UTF8.GetBytes(message));
+                    received = stream.Read(buffer, 0, buffer.Length);
+                }
+            });
     
+        }
+    }
 }
+
