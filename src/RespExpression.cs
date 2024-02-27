@@ -4,11 +4,11 @@ namespace codecrafters_redis;
 
 public class RespExpression
 {
-    private readonly ImmutableArray<string> _value;
+    private readonly List<string> _value;
 
     public RespExpression(IEnumerable<string> value)
     {
-        _value = value.ToImmutableArray();
+        _value = value.ToList();
     }
 
     private Command Command => _value[2] switch
@@ -37,31 +37,33 @@ public class RespExpression
 
     private string HandleSetCommand(Store store)
     {
-        return store.Set(Key, Value) ? Resp.SimpleEncode("OK") : "null";
-    }
-
-    private async Task ExpireSetCommand(Store store)
-    {
-        if (CommandOption == CommandOption.Px)
-        {
-            await Task.Delay(int.Parse(_value[10]));
-            store!.Remove(Key);
-        }
+        var expiration = TryGetArgument("px", out var expirationValue) 
+            ? int.Parse(expirationValue)
+            : 0;
+        
+        return store.Set(GetKey, GetValue, expiration) ? Resp.SimpleEncode("OK") : "null";
     }
 
     private string HandleGetCommand(Store store)
     {
-        var value = store.GetValue(Key);
-        return value.Length > 0 ? Resp.BulkEncode(value) : Resp.NullEncode();
+        var value = store.GetValue(GetKey);
+        return value!.Length > 0 ? Resp.BulkEncode(value) : Resp.NullEncode();
     }
     
-    private string Key => _value[4];
-    private string Value => _value[6];
-    
-    
+    private string GetKey => _value[4];
+    private string GetValue => _value[6];
 
-    
+    private bool TryGetArgument(string key, out string value)
+    {
+        var index = _value.FindIndex(e => e == key);
+        if (index is -1)
+        {
+            value = string.Empty;
+            return false;
+        }
 
-
+        value = $"{index}";
+        return true;
+    }
 
 }
