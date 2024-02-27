@@ -39,11 +39,6 @@ public class RespExpression
 
     private string HandleSetCommand()
     {
-        if (CommandOption == CommandOption.Px)
-        {
-            ExpireSetCommand();
-        }
-        
         return _store!.Set(Key, Value) ? Resp.SimpleEncode("OK") : "null";
     }
 
