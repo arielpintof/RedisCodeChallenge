@@ -9,6 +9,8 @@ public class Store
 
     public bool Set(string key, string value) => _storeValues.TryAdd(key, value);
 
-    public string GetValue(string key) => _storeValues.GetValueOrDefault(key, "(nil)");
-    
+    public string GetValue(string key) => _storeValues.GetValueOrDefault(key, "");
+
+    public bool Remove(string key) => _storeValues.Remove(key);
+
 }
