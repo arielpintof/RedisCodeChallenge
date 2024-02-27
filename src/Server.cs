@@ -8,8 +8,8 @@ public static class Server
 {
     public static async Task Main(string[] args)
     {   
-        var port = args.Length >= 2 ? int.Parse(args.ElementAt(1)) : 6379;
-        var server = new TcpListener(IPAddress.Any, port);
+        ServerSettings.Configure(args);
+        var server = new TcpListener(IPAddress.Any, ServerSettings.Port);
 
         server.Start();
 

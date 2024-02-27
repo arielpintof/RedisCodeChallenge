@@ -39,7 +39,7 @@ public class RespExpression
 
     private string HandleInfoCommand()
     {
-        return _value[4].Equals("replication") ? Resp.BulkEncode("role:master") : Resp.NullEncode();
+        return Resp.BulkEncode($"role:{ServerSettings.Role}");
     }
 
     private string HandleSetCommand(Store store)
