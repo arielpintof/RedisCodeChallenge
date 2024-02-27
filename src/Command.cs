@@ -6,4 +6,5 @@ public enum Command
     Echo,
     Set,
     Get,
+    Info,
 }

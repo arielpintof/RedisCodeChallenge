@@ -17,6 +17,7 @@ public class RespExpression
         "echo" => Command.Echo,
         "set" => Command.Set,
         "get" => Command.Get,
+        "info" => Command.Info,
         _ => throw new ArgumentOutOfRangeException()
     };
     
@@ -32,8 +33,14 @@ public class RespExpression
         Command.Echo => Resp.BulkEncode(_value[4]),
         Command.Set => HandleSetCommand(store),
         Command.Get => HandleGetCommand(store),
+        Command.Info => HandleInfoCommand(),
         _ => throw new ArgumentOutOfRangeException()
     };
+
+    private string HandleInfoCommand()
+    {
+        return _value[2].Equals("replication") ? "role:master" : Resp.NullEncode();
+    }
 
     private string HandleSetCommand(Store store)
     {
