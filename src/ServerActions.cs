@@ -19,16 +19,16 @@ public static class ServerActions
         var stream = client.GetStream();
         await stream.WriteAsync(EncodePing);
         await stream.ReadAsync(buffer);
-        Console.WriteLine(buffer);
+        Console.WriteLine($"Recibido: {buffer}");
         await stream.WriteAsync(EncodePort);
         await stream.ReadAsync(buffer);
-        Console.WriteLine(buffer);
+        Console.WriteLine($"Recibido: {buffer}");
         await stream.WriteAsync(EncodeCapa);
         await stream.ReadAsync(buffer);
-        Console.WriteLine(buffer);
+        Console.WriteLine($"Recibido: {buffer}");
         await stream.WriteAsync(EncodePsync);
         await stream.ReadAsync(buffer);
-        Console.WriteLine(buffer);
+        Console.WriteLine($"Recibido: {buffer}");
     }
     
     private static byte[] EncodePing => Encoding.UTF8.GetBytes(Resp.ArrayEncode(new List<string>{"Ping"}));
