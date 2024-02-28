@@ -18,8 +18,8 @@ public class RespExpression
         "set" => Command.Set,
         "get" => Command.Get,
         "info" => Command.Info,
-        "Replconf" => Command.Replconf,
-        "Psync" => Command.Psync,
+        "replconf" => Command.Replconf,
+        "rsync" => Command.Psync,
         _ => throw new ArgumentOutOfRangeException()
     };
     
