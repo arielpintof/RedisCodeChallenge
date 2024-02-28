@@ -29,7 +29,7 @@ public static class Resp
         var elements = value.Select(element => $"${element.Length}{Separator}{element}{Separator}").ToList();
         var joinedElements = string.Join("", elements);
         
-        Console.WriteLine($"*{value.Count}{Separator}{joinedElements}");
+        Console.Write($"*{value.Count}{Separator}{joinedElements}");
         return $"*{value.Count}{Separator}{joinedElements}";
     }
 }
