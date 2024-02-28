@@ -7,7 +7,7 @@ namespace codecrafters_redis;
 public static class ServerActions
 {
     private static IPAddress IpAddress => Dns.GetHostEntry("localhost").AddressList[0];
-    private static IPEndPoint EndPoint => new IPEndPoint(IpAddress, ServerSettings.MasterPort);
+    private static IPEndPoint EndPoint => new(IpAddress, ServerSettings.MasterPort);
 
     public static async void HandShakeToMaster()
     {
@@ -19,37 +19,12 @@ public static class ServerActions
         await stream.WriteAsync(EncodeCapa);
     }
     
-    public static async Task SendPingToMaster()
-    {
-        var endpoint = new IPEndPoint(IpAddress, ServerSettings.MasterPort);
-        using var client = new TcpClient();
-        await client.ConnectAsync(endpoint);
-        var stream = client.GetStream();
-        var message = Resp.ArrayEncode(new List<string>{"Ping"});
-        
-        await stream.WriteAsync(Encoding.UTF8.GetBytes(message));
-        Console.WriteLine("Sent PING to master");
-    }
+    private static byte[] EncodePing => Encoding.UTF8.GetBytes(Resp.ArrayEncode(new List<string>{"Ping"}));
 
-    public static async Task SendPortToMaster()
-    {
-        var endpoint = new IPEndPoint(IpAddress, ServerSettings.MasterPort);
-        using var client = new TcpClient();
-        await client.ConnectAsync(endpoint);
-        var stream = client.GetStream();
-        var message = Resp.ArrayEncode(new List<string>
-        {
-            "REPLCONF", "listening-port", ServerSettings.Port.ToString()
-        });
-        await stream.WriteAsync(Encoding.UTF8.GetBytes(message));
-        Console.WriteLine("Sent listening port to master");
-
-    }
-
-    public static byte[] EncodePing => Encoding.UTF8.GetBytes(Resp.ArrayEncode(new List<string>{"Ping"}));
-    public static byte[] EncodePort =>  Encoding.UTF8.GetBytes(
+    private static byte[] EncodePort =>  Encoding.UTF8.GetBytes(
         Resp.ArrayEncode(new List<string> { "REPLCONF", "listening-port", ServerSettings.Port.ToString() }));
-    public static byte[] EncodeCapa => Encoding.UTF8.GetBytes(
+
+    private static byte[] EncodeCapa => Encoding.UTF8.GetBytes(
         Resp.ArrayEncode(new List<string> { "REPLCONF", "capa", "psync2" }));
     
    
