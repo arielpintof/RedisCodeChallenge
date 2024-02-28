@@ -25,6 +25,10 @@ public static class Server
 
             Task.Run(async () =>
             {
+                if (ServerSettings.IsMaster())
+                {
+                    ServerActions.HandShakeToMaster();
+                }
                 var buffer = new byte[1024];
                 var stream = client.GetStream();
                 var received = await stream.ReadAsync(buffer);
