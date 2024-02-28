@@ -7,4 +7,5 @@ public enum Command
     Set,
     Get,
     Info,
+    Replconf,
 }

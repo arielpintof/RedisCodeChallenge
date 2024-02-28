@@ -18,6 +18,7 @@ public class RespExpression
         "set" => Command.Set,
         "get" => Command.Get,
         "info" => Command.Info,
+        "Replconf" => Command.Replconf,
         _ => throw new ArgumentOutOfRangeException()
     };
     
@@ -34,6 +35,7 @@ public class RespExpression
         Command.Set => HandleSetCommand(store),
         Command.Get => HandleGetCommand(store),
         Command.Info => HandleInfoCommand(),
+        Command.Replconf => Resp.SimpleEncode("OK"),
         _ => throw new ArgumentOutOfRangeException()
     };
 
