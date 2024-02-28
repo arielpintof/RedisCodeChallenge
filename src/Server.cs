@@ -18,7 +18,7 @@ public static class Server
             var store = new Store();
             var client = await server.AcceptTcpClientAsync();
 
-            await Task.Run(async () =>
+            Task.Run(async () =>
             {
                 if (!ServerSettings.IsMaster())
                 {
