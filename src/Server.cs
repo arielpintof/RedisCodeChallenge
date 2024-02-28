@@ -17,7 +17,8 @@ public static class Server
         {
             var store = new Store();
             var client = await server.AcceptTcpClientAsync();
-            Task.Run(async () =>
+            
+            await Task.Run(async () =>
             {
                 var buffer = new byte[1024];
                 var stream = client.GetStream();
@@ -30,6 +31,7 @@ public static class Server
                     await stream.WriteAsync(Encoding.UTF8.GetBytes(message));
                     received = stream.Read(buffer, 0, buffer.Length);
                 }
+                
             });
     
         }

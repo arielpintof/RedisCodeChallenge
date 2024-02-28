@@ -29,13 +29,18 @@ public class RespExpression
 
     public string GetMessage(Store store) => Command switch
     {
-        Command.Ping => Resp.SimpleEncode("PONG"),
+        Command.Ping => HandlePingCommand(),
         Command.Echo => Resp.BulkEncode(Value[4]),
         Command.Set => HandleSetCommand(store),
         Command.Get => HandleGetCommand(store),
         Command.Info => HandleInfoCommand(),
         _ => throw new ArgumentOutOfRangeException()
     };
+
+    private string HandlePingCommand()
+    {
+        return Resp.SimpleEncode("PONG");
+    }
 
     private string HandleInfoCommand()
     {
