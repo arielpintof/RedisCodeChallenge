@@ -30,5 +30,5 @@ public static class ServerActions
         Resp.ArrayEncode(new List<string> { "REPLCONF", "capa", "psync2" }));
 
     private static byte[] EncodePsync => Encoding.UTF8.GetBytes(
-        Resp.ArrayEncode(new List<string>() { "PSYNC", "?", "-1" }));
+        Resp.ArrayEncode(new List<string> { "PSYNC", "?", "-1" }));
 }
