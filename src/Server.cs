@@ -10,6 +10,11 @@ public static class Server
     {
         ServerSettings.Configure(args);
         var server = new TcpListener(IPAddress.Any, ServerSettings.Port);
+        
+        if (!ServerSettings.IsMaster())
+        {
+            ServerSettings.SendPingToMaster();
+        }
 
         server.Start();
 
@@ -20,10 +25,7 @@ public static class Server
 
             Task.Run(async () =>
             {
-                if (!ServerSettings.IsMaster())
-                {
-                    ServerSettings.SendPingToMaster();
-                }
+                
                 var buffer = new byte[1024];
                 var stream = client.GetStream();
                 var received = stream.Read(buffer, 0, buffer.Length);
