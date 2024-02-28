@@ -13,9 +13,7 @@ public static class Server
         
         if (!ServerSettings.IsMaster())
         {
-            ServerActions.SendPingToMaster();
-            
-            //ServerActions.SendCapaToMaster();
+            ServerActions.HandShakeToMaster();
         }
 
         server.Start();
