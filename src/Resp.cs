@@ -27,10 +27,8 @@ public static class Resp
     public static string ArrayEncode(List<string> value)
     {
         var elements = value.Select(element => $"${element.Length}{Separator}{element}{Separator}").ToList();
-        var joinedElements = string.Join("", elements); // Unir todos los elementos en una cadena
+        var joinedElements = string.Join("", elements);
 
-        var message = $"*{value.Count}{Separator}{joinedElements}";
-        Console.WriteLine(message);
-        return message;
+        return $"*{value.Count}{Separator}{joinedElements}";
     }
 }
