@@ -21,13 +21,16 @@ public static class Server
         while (true)
         {
             var store = new Store();
-            var client = await server.AcceptTcpClientAsync();
+            
 
             Task.Run(async () =>
             {
+                var client = await server.AcceptTcpClientAsync();
                 var buffer = new byte[1024];
                 var stream = client.GetStream();
                 var received = await stream.ReadAsync(buffer);
+                using var connection = new TcpClient();
+                await connection.ConnectAsync(ServerActions.EndPoint);
                 while (received > 0)
                 {
                     var data = Encoding.UTF8.GetString(buffer);

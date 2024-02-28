@@ -7,7 +7,7 @@ namespace codecrafters_redis;
 public static class ServerActions
 {
     private static IPAddress IpAddress => Dns.GetHostEntry("localhost").AddressList[0];
-    private static IPEndPoint EndPoint => new(IpAddress, ServerSettings.MasterPort);
+    public static IPEndPoint EndPoint => new(IpAddress, ServerSettings.MasterPort);
 
     public static async void HandShakeToMaster()
     {
@@ -30,6 +30,7 @@ public static class ServerActions
         await stream.ReadAsync(buffer);
         
     }
+    
     
     private static byte[] EncodePing => Encoding.UTF8.GetBytes(Resp.ArrayEncode(new List<string>{"Ping"}));
 
