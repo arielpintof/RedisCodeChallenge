@@ -13,9 +13,9 @@ public static class Server
         
         if (!ServerSettings.IsMaster())
         {
-            await ServerActions.SendPingToMaster();
-            await ServerActions.SendPortToMaster();
-            await ServerActions.SendCapaToMaster();
+            ServerActions.SendPingToMaster();
+            ServerActions.SendPortToMaster();
+            ServerActions.SendCapaToMaster();
         }
 
         server.Start();

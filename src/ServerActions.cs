@@ -8,7 +8,7 @@ public static class ServerActions
 {
     private static IPAddress IpAddress => Dns.GetHostEntry("localhost").AddressList[0];
     
-    public static async Task SendPingToMaster()
+    public static async void SendPingToMaster()
     {
         var endpoint = new IPEndPoint(IpAddress, ServerSettings.MasterPort);
         using var client = new TcpClient();
@@ -20,7 +20,7 @@ public static class ServerActions
         Console.WriteLine("Sent PING to master");
     }
 
-    public static async Task SendPortToMaster()
+    public static async void SendPortToMaster()
     {
         var endpoint = new IPEndPoint(IpAddress, ServerSettings.MasterPort);
         using var client = new TcpClient();
@@ -35,7 +35,7 @@ public static class ServerActions
 
     }
     
-    public static async Task SendCapaToMaster()
+    public static async void SendCapaToMaster()
     {
         var endpoint = new IPEndPoint(IpAddress, ServerSettings.MasterPort);
         using var client = new TcpClient();
