@@ -11,12 +11,12 @@ public static class Server
         ServerSettings.Configure(args);
         var server = new TcpListener(IPAddress.Any, ServerSettings.Port);
         
+        server.Start();
+        
         if (!ServerSettings.IsMaster())
         {
             ServerActions.HandShakeToMaster();
         }
-
-        server.Start();
 
         while (true)
         {
