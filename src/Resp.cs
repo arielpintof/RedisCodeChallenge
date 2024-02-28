@@ -28,6 +28,8 @@ public static class Resp
     {
         var elements = value.Select(element => 
             $"${element.Length}{Separator}{element}{Separator}").ToList();
-        return $"*{value.Count}{Separator}{elements}";
+        var message = $"*{value.Count}{Separator}{elements}";
+        Console.WriteLine(message);
+        return message;
     }
 }

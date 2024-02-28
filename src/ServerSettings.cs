@@ -40,8 +40,8 @@ public static class ServerSettings
         
         var stream = client.GetStream();
         var message = Resp.ArrayEncode(new List<string>(){"Ping"});
-        var data = Encoding.ASCII.GetBytes(message);
-        stream.Write(data, 0, data.Length);
+        
+        await stream.WriteAsync(Encoding.UTF8.GetBytes(message));
         Console.WriteLine("Sent PING to master");
     }
     
