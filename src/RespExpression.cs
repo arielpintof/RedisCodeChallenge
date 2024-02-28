@@ -36,9 +36,15 @@ public class RespExpression
         Command.Set => HandleSetCommand(store),
         Command.Get => HandleGetCommand(store),
         Command.Info => HandleInfoCommand(),
-        Command.Replconf => Resp.SimpleEncode("OK"),
+        Command.Replconf => HandleReplCommand(),
         _ => throw new ArgumentOutOfRangeException()
     };
+
+    private string HandleReplCommand()
+    {
+        Console.WriteLine($"Recibiendo RESPLCONF...");
+        return Resp.SimpleEncode("OK");
+    }
 
     private string HandlePingCommand()
     {
