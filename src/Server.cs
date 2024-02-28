@@ -13,17 +13,15 @@ public static class Server
         
         server.Start();
         
+        if (!ServerSettings.IsMaster())
+        {
+            ServerActions.HandShakeToMaster();
+        }
         
-
         while (true)
         {
             var store = new Store();
             var client = await server.AcceptTcpClientAsync();
-            
-            if (!ServerSettings.IsMaster())
-            {
-                ServerActions.HandShakeToMaster(client);
-            }
 
             Task.Run(async () =>
             {

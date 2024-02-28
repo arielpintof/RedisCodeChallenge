@@ -9,10 +9,11 @@ public static class ServerActions
     private static IPAddress IpAddress => Dns.GetHostEntry("localhost").AddressList[0];
     private static IPEndPoint EndPoint => new(IpAddress, ServerSettings.MasterPort);
 
-    public static async void HandShakeToMaster(TcpClient client)
+    public static async void HandShakeToMaster()
     {
         var buffer = new byte[1024];
-        
+        using var client = new TcpClient();
+        Console.WriteLine($"Sending to Port: {ServerSettings.MasterPort}");
         await client.ConnectAsync(EndPoint);
         
         var stream = client.GetStream();
