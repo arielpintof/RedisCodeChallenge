@@ -13,7 +13,7 @@ public static class Server
         
         if (!ServerSettings.IsMaster())
         {
-            ServerSettings.SendPingToMaster();
+            await ServerActions.SendPingToMaster();
         }
 
         server.Start();

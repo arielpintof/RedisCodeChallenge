@@ -31,19 +31,7 @@ public static class ServerSettings
 
     public static bool IsMaster() => Role.Equals("master");
 
-    public static async void SendPingToMaster()
-    {
-        var ipAddress = (await Dns.GetHostEntryAsync("localhost")).AddressList[0];
-        var endpoint = new IPEndPoint(ipAddress, MasterPort);
-        using var client = new TcpClient();
-        await client.ConnectAsync(endpoint);
-        
-        var stream = client.GetStream();
-        var message = Resp.ArrayEncode(new List<string>(){"Ping"});
-        
-        await stream.WriteAsync(Encoding.UTF8.GetBytes(message));
-        Console.WriteLine("Sent PING to master");
-    }
+    
     
 
 
