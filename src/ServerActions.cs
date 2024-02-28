@@ -17,7 +17,10 @@ public static class ServerActions
         
         var stream = client.GetStream();
         await stream.WriteAsync(EncodePing);
-        await stream.ReadAsync(buffer);
+        var readAsync = await stream.ReadAsync(buffer);
+        if (!Encoding.UTF8.GetString(buffer).Contains("PONG")) {
+            throw new Exception("Ping Failed");
+        }
         await stream.WriteAsync(EncodePort);
         await stream.WriteAsync(EncodeCapa);
         await stream.WriteAsync(EncodePsync);
