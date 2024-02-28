@@ -13,10 +13,12 @@ public static class ServerActions
     {
         using var client = new TcpClient();
         await client.ConnectAsync(EndPoint);
+        
         var stream = client.GetStream();
         await stream.WriteAsync(EncodePing);
         await stream.WriteAsync(EncodePort);
         await stream.WriteAsync(EncodeCapa);
+        await stream.WriteAsync(EncodePsync);
     }
     
     private static byte[] EncodePing => Encoding.UTF8.GetBytes(Resp.ArrayEncode(new List<string>{"Ping"}));
@@ -26,6 +28,7 @@ public static class ServerActions
 
     private static byte[] EncodeCapa => Encoding.UTF8.GetBytes(
         Resp.ArrayEncode(new List<string> { "REPLCONF", "capa", "psync2" }));
-    
-   
+
+    private static byte[] EncodePsync => Encoding.UTF8.GetBytes(
+        Resp.ArrayEncode(new List<string>() { "PSYNC", "?", "-1" }));
 }

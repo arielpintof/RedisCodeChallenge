@@ -8,4 +8,5 @@ public enum Command
     Get,
     Info,
     Replconf,
+    Psync
 }
