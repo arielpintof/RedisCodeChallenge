@@ -25,8 +25,10 @@ public static class ServerSettings
         }
     }
 
-   
-    
-    
+    public static bool IsMaster() => Role.Equals("master");
+
+
+
+
 }
 

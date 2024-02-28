@@ -2,7 +2,7 @@
 
 public static class Resp
 {
-    private const string Separator = "\r\n";
+    public const string Separator = "\r\n";
 
     public static RespExpression Decode(string value)
     {

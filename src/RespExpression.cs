@@ -4,14 +4,14 @@ namespace codecrafters_redis;
 
 public class RespExpression
 {
-    private readonly List<string> _value;
+    public readonly List<string> Value;
 
     public RespExpression(IEnumerable<string> value)
     {
-        _value = value.ToList();
+        Value = value.ToList();
     }
 
-    private Command Command => _value[2] switch
+    private Command Command => Value[2] switch
     {
         "ping" => Command.Ping,
         "echo" => Command.Echo,
@@ -21,7 +21,7 @@ public class RespExpression
         _ => throw new ArgumentOutOfRangeException()
     };
     
-    private CommandOption CommandOption => _value[8] switch
+    private CommandOption CommandOption => Value[8] switch
     {
         "px" => CommandOption.Px,
         _ => throw new ArgumentOutOfRangeException()
@@ -30,7 +30,7 @@ public class RespExpression
     public string GetMessage(Store store) => Command switch
     {
         Command.Ping => Resp.SimpleEncode("PONG"),
-        Command.Echo => Resp.BulkEncode(_value[4]),
+        Command.Echo => Resp.BulkEncode(Value[4]),
         Command.Set => HandleSetCommand(store),
         Command.Get => HandleGetCommand(store),
         Command.Info => HandleInfoCommand(),
@@ -39,9 +39,20 @@ public class RespExpression
 
     private string HandleInfoCommand()
     {
-        return Resp.BulkEncode($"role:{ServerSettings.Role}");
+        if (!this.ValueHas("info") && !this.ValueHas("replication"))
+            return Resp.BulkEncode($"role:{ServerSettings.Role}");
+        
+        var response = new List<string>
+        {
+            $"role:{ServerSettings.Role}",
+            "master_replid:8371b4fb1155b71f4a04d3e1bc3e18c4a990aeeb",
+            "master_repl_offset:0"
+        };
+            
+        return Resp.BulkEncode(string.Join(Resp.Separator, response));
     }
 
+   
     private string HandleSetCommand(Store store)
     {
         var expiration = TryGetArgument("px", out var expirationValue) 
@@ -57,12 +68,12 @@ public class RespExpression
         return value!.Length > 0 ? Resp.BulkEncode(value) : Resp.NullEncode();
     }
     
-    private string GetKey => _value[4];
-    private string GetValue => _value[6];
+    private string GetKey => Value[4];
+    private string GetValue => Value[6];
 
     private bool TryGetArgument(string key, out string value)
     {
-        var index = _value.FindIndex(e => e == key);
+        var index = Value.FindIndex(e => e == key);
         if (index is -1)
         {
             value = string.Empty;
@@ -73,4 +84,12 @@ public class RespExpression
         return true;
     }
 
+}
+
+public static class RespExtension
+{
+    public static bool ValueHas(this RespExpression expression, string argument)
+    {
+        return expression.Value.Any(e => e.Equals(argument));
+    }
 }
