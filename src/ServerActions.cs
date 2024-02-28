@@ -18,13 +18,17 @@ public static class ServerActions
         
         var stream = client.GetStream();
         await stream.WriteAsync(EncodePing);
-        var readAsync = await stream.ReadAsync(buffer);
-        if (!Encoding.UTF8.GetString(buffer).Contains("PONG")) {
-            throw new Exception("Ping Failed");
-        }
+        await stream.ReadAsync(buffer);
+        Console.WriteLine(buffer);
         await stream.WriteAsync(EncodePort);
+        await stream.ReadAsync(buffer);
+        Console.WriteLine(buffer);
         await stream.WriteAsync(EncodeCapa);
+        await stream.ReadAsync(buffer);
+        Console.WriteLine(buffer);
         await stream.WriteAsync(EncodePsync);
+        await stream.ReadAsync(buffer);
+        Console.WriteLine(buffer);
     }
     
     private static byte[] EncodePing => Encoding.UTF8.GetBytes(Resp.ArrayEncode(new List<string>{"Ping"}));

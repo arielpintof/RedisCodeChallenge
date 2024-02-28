@@ -19,7 +19,7 @@ public class RespExpression
         "get" => Command.Get,
         "info" => Command.Info,
         "replconf" => Command.Replconf,
-        "rsync" => Command.Psync,
+        "psync" => Command.Psync,
         _ => throw new ArgumentOutOfRangeException()
     };
     
