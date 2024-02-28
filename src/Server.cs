@@ -25,17 +25,17 @@ public static class Server
 
             Task.Run(async () =>
             {
-                
                 var buffer = new byte[1024];
                 var stream = client.GetStream();
                 var received = await stream.ReadAsync(buffer);
-                
+                while (received > 0)
+                {
                     var data = Encoding.UTF8.GetString(buffer);
                     var expression = Resp.Decode(data);
                     var message = expression.GetMessage(store);
                     await stream.WriteAsync(Encoding.UTF8.GetBytes(message));
-                    
-                
+                    received = await stream.ReadAsync(buffer);
+                }
 
             });
 
