@@ -14,8 +14,8 @@ public static class Server
         if (!ServerSettings.IsMaster())
         {
             ServerActions.SendPingToMaster();
-            ServerActions.SendPortToMaster();
-            ServerActions.SendCapaToMaster();
+            
+            //ServerActions.SendCapaToMaster();
         }
 
         server.Start();
@@ -27,7 +27,10 @@ public static class Server
 
             Task.Run(async () =>
             {
-                
+                if (!ServerSettings.IsMaster())
+                {
+                    ServerActions.SendPortToMaster();
+                }
                 var buffer = new byte[1024];
                 var stream = client.GetStream();
                 var received = stream.Read(buffer, 0, buffer.Length);
