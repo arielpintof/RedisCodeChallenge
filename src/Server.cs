@@ -7,7 +7,7 @@ using codecrafters_redis;
 public static class Server
 {
     public static async Task Main(string[] args)
-    {   
+    {
         ServerSettings.Configure(args);
         var server = new TcpListener(IPAddress.Any, ServerSettings.Port);
 
@@ -17,9 +17,13 @@ public static class Server
         {
             var store = new Store();
             var client = await server.AcceptTcpClientAsync();
-            
+
             await Task.Run(async () =>
             {
+                if (!ServerSettings.IsMaster())
+                {
+                    ServerSettings.SendPingToMaster();
+                }
                 var buffer = new byte[1024];
                 var stream = client.GetStream();
                 var received = stream.Read(buffer, 0, buffer.Length);
@@ -31,9 +35,9 @@ public static class Server
                     await stream.WriteAsync(Encoding.UTF8.GetBytes(message));
                     received = stream.Read(buffer, 0, buffer.Length);
                 }
-                
+
             });
-    
+
         }
     }
 }

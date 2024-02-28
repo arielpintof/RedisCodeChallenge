@@ -23,4 +23,11 @@ public static class Resp
     {
         return $"$-1{Separator}";
     }
+    
+    public static string ArrayEncode(List<string> value)
+    {
+        var elements = value.Select(element => 
+            $"${element.Length}{Separator}{element}{Separator}").ToList();
+        return $"*{value.Count}{Separator}{elements}";
+    }
 }
