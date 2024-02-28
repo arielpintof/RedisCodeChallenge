@@ -17,6 +17,7 @@ public static class ServerSettings
         var portIndex = Array.IndexOf(args, "--port");
         if (portIndex != -1)
         {
+            Role = "slave";
             Port = int.Parse(args[portIndex + 1]);
         }
         
