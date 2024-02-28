@@ -25,10 +25,6 @@ public static class Server
 
             Task.Run(async () =>
             {
-                if (!ServerSettings.IsMaster())
-                {
-                    ServerActions.SendPortToMaster();
-                }
                 var buffer = new byte[1024];
                 var stream = client.GetStream();
                 var received = stream.Read(buffer, 0, buffer.Length);
