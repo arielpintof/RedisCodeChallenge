@@ -22,11 +22,6 @@ public static class Server
         {
             var store = new Store();
             var client = await server.AcceptTcpClientAsync();
-            
-            if (ServerSettings.IsMaster())
-            {
-                ServerActions.HandShakeToMaster();
-            }
 
             Task.Run(async () =>
             {
