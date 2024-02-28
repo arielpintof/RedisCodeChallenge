@@ -11,11 +11,13 @@ public static class ServerActions
 
     public static async void HandShakeToMaster()
     {
+        var buffer = new byte[1024];
         using var client = new TcpClient();
         await client.ConnectAsync(EndPoint);
         
         var stream = client.GetStream();
         await stream.WriteAsync(EncodePing);
+        await stream.ReadAsync(buffer);
         await stream.WriteAsync(EncodePort);
         await stream.WriteAsync(EncodeCapa);
         await stream.WriteAsync(EncodePsync);
