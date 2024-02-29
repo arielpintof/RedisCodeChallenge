@@ -13,19 +13,18 @@ public static class Server
         
         server.Start();
         
-        if (!ServerSettings.IsMaster())
-        {
+        
             ServerActions.HandShakeToMaster();
-        }
+        
         
         while (true)
         {
             var store = new Store();
-            
+            var client = await server.AcceptTcpClientAsync();
 
             Task.Run(async () =>
             {
-                var client = await server.AcceptTcpClientAsync();
+               
                 var buffer = new byte[1024];
                 var stream = client.GetStream();
                 var received = await stream.ReadAsync(buffer);
