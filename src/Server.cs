@@ -25,7 +25,6 @@ public static class Server
 
             Task.Run(async () =>
             {
-               
                 var buffer = new byte[1024];
                 var stream = client.GetStream();
                 var received = await stream.ReadAsync(buffer);

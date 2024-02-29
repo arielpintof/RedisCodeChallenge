@@ -48,6 +48,7 @@ public class RespExpression
 
     private string HandlePingCommand()
     {
+        Console.WriteLine($"Recibiendo PING...");
         return Resp.SimpleEncode("PONG");
     }
 
