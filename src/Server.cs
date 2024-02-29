@@ -17,6 +17,8 @@ public static class Server
         {
             ServerActions.HandShakeToMaster();
         }
+
+        Console.Write($"role : {ServerSettings.Role}");
         
         while (true)
         {
