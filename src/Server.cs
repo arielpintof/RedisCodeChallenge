@@ -9,8 +9,8 @@ public static class Server
     public static async Task Main(string[] args)
     {
         await ServerSettings.Configure(args);
-        var server = new TcpListener(IPAddress.Any, ServerSettings.Port);
         
+        var server = new TcpListener(IPAddress.Any, ServerSettings.Port);
         server.Start();
         
         if (!ServerSettings.IsMaster())
@@ -18,7 +18,7 @@ public static class Server
             ServerActions.HandShakeToMaster();
         }
 
-        Console.Write($"role : {ServerSettings.Role}");
+        
         
         while (true)
         {
@@ -37,9 +37,9 @@ public static class Server
                     var expression = Resp.Decode(data);
                     var message = expression.GetMessage(store);
                     await stream.WriteAsync(Encoding.UTF8.GetBytes(message));
-                    received = await stream.ReadAsync(buffer);
+                    received = stream.Read(buffer);
                 }
-
+               
             });
 
         }
