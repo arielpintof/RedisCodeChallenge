@@ -8,7 +8,7 @@ public static class Server
 {
     public static async Task Main(string[] args)
     {
-        ServerSettings.Configure(args);
+        await ServerSettings.Configure(args);
         var server = new TcpListener(IPAddress.Any, ServerSettings.Port);
         
         server.Start();
@@ -22,6 +22,7 @@ public static class Server
         {
             var store = new Store();
             var client = await server.AcceptTcpClientAsync();
+            
 
             Task.Run(async () =>
             {

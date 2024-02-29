@@ -12,7 +12,7 @@ public static class ServerSettings
     public static int MasterPort { get; set; }
     
 
-    public static void Configure(string[] args)
+    public static Task Configure(string[] args)
     {
         var portIndex = Array.IndexOf(args, "--port");
         if (portIndex != -1)
@@ -28,6 +28,8 @@ public static class ServerSettings
             MasterHost = args[roleIndex + 1];
             MasterPort = int.Parse(args[roleIndex + 2]);
         }
+
+        return Task.CompletedTask;
     }
 
     public static bool IsMaster() => Role.Equals("master");
