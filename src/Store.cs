@@ -7,7 +7,7 @@ namespace codecrafters_redis;
 //Operaciones Set y Get
 public class Store
 {
-    private readonly ConcurrentDictionary<string, Data> _storeValues = new();
+    private readonly Dictionary<string, Data> _storeValues = new();
 
     public bool Set(string key, string value, int expiration = 0) => 
         _storeValues.TryAdd(key, new Data(value, expiration));
@@ -22,7 +22,7 @@ public class Store
             return value.Value;
         }
 
-        _storeValues.TryRemove(key, out _);
+        _storeValues.Remove(key, out _);
 
         return "";
 
