@@ -38,11 +38,13 @@ public class RespExpression
     {
         var emptyRdb = ServerSettings.EmptyRdb.ToBinary().ToString();
         Console.WriteLine(emptyRdb);
-        return new List<string>
+        var response = new List<string>
         {
             Resp.SimpleEncode($"FULLRESYNC {ServerSettings.MasterId} 0"),
             $"${emptyRdb!.Length}{Resp.Separator}{emptyRdb}"
         };
+
+        return new List<string>{string.Join("", response)};
     }
 
     private IEnumerable<string> HandleReplCommand()
