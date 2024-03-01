@@ -24,7 +24,7 @@ public class Store
 
         _storeValues.TryRemove(key, out _);
 
-        return "";
+        return "null";
 
     } 
     
