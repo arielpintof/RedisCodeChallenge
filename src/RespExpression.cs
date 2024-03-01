@@ -11,12 +11,12 @@ public class RespExpression
         Value = value.ToList();
     }
 
-    private StringType StringType => Value[0] switch
+    /*private StringType StringType => Value[0] switch
     {
         "+" => StringType.Simple,
         "*" => StringType.Array,
         _ => throw new ArgumentOutOfRangeException()
-    };
+    };*/
     
     
     private Command Command => Value[2].ToLowerInvariant() switch
