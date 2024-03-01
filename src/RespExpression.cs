@@ -37,6 +37,7 @@ public class RespExpression
     private IEnumerable<string> HandlePsyncCommand()
     {
         var emptyRdb = ServerSettings.EmptyRdb.ToBinary().ToString();
+        Console.WriteLine(emptyRdb);
         return new List<string>
         {
             Resp.SimpleEncode($"FULLRESYNC {ServerSettings.MasterId} 0"),

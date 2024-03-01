@@ -46,6 +46,5 @@ public static class StringExtension
     public static byte[] AsByte(this string value) => Encoding.UTF8.GetBytes(value).ToArray();
     
     public static byte[] ToBinary(this string value) => Convert.FromBase64String(value);
-
     
 }
