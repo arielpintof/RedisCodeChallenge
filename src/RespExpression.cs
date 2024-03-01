@@ -10,6 +10,14 @@ public class RespExpression
     {
         Value = value.ToList();
     }
+
+    private StringType StringType => Value[0] switch
+    {
+        "+" => StringType.Simple,
+        "*" => StringType.Array,
+        _ => throw new ArgumentOutOfRangeException()
+    };
+    
     
     private Command Command => Value[2].ToLowerInvariant() switch
     {
@@ -31,8 +39,14 @@ public class RespExpression
         Command.Get => HandleGetCommand(store),
         Command.Info => HandleInfoCommand(),
         Command.Replconf => HandleReplCommand(),
+        Command.Psync => HandlePsyncCommand(),
         _ => throw new ArgumentOutOfRangeException()
     };
+
+    private string HandlePsyncCommand()
+    {
+        return Resp.SimpleEncode($"FULLRESYNC {ServerSettings.MasterId} 0");
+    }
 
     private string HandleReplCommand()
     {
@@ -52,7 +66,7 @@ public class RespExpression
         var response = new List<string>
         {
             $"role:{ServerSettings.Role}",
-            "master_replid:8371b4fb1155b71f4a04d3e1bc3e18c4a990aeeb",
+            $"master_replid:{ServerSettings.MasterId}",
             "master_repl_offset:0"
         };
             
