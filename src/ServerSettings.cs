@@ -18,7 +18,6 @@ public static class ServerSettings
         if (portIndex != -1)
         {
             Port = int.Parse(args[portIndex + 1]);
-            Console.Write($"Puerto: {Port}");
         }
         
         var roleIndex = Array.IndexOf(args, "--replicaof");
