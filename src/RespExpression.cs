@@ -13,7 +13,7 @@ public class RespExpression
 
     private Command Command => Value[2] switch
     {
-        "ping" => Command.Ping,
+        "PING" => Command.Ping,
         "echo" => Command.Echo,
         "set" => Command.Set,
         "get" => Command.Get,
