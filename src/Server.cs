@@ -16,17 +16,15 @@ public static class Server
         if (!ServerSettings.IsMaster())
         {
             ServerActions.HandShakeToMaster();
-            
-            
         }
-        var store = new Store();
-        var client = await server.AcceptTcpClientAsync();
-        var buffer = new byte[1024];
-
         while (true)
         {
+            var store = new Store();
+            var client = await server.AcceptTcpClientAsync();
+            
             Task.Run(async () =>
             {
+                var buffer = new byte[1024];
                 var stream = client.GetStream();
                 var received = await stream.ReadAsync(buffer);
                 while (received > 0)
@@ -35,6 +33,7 @@ public static class Server
                     var expression = Resp.Decode(data);
                     var message = expression.GetMessage(store);
                     await stream.WriteAsync(Encoding.UTF8.GetBytes(message));
+                    //received = stream.Read(buffer);
                 }
                
             });
