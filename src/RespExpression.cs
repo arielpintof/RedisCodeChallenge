@@ -36,12 +36,12 @@ public class RespExpression
 
     private IEnumerable<string> HandlePsyncCommand()
     {
-        var emptyRdb = ServerSettings.EmptyRdb.ToBinary().ToString();
+        var emptyRdb = ServerSettings.EmptyRdb.ToBinary();
         Console.WriteLine(emptyRdb);
         var response = new List<string>
         {
             Resp.SimpleEncode($"FULLRESYNC {ServerSettings.MasterId} 0"),
-            $"${emptyRdb!.Length}{Resp.Separator}{emptyRdb}"
+            $"${emptyRdb.Length}{Resp.Separator}{emptyRdb}"
         };
 
         return new List<string>{string.Join("", response)};
