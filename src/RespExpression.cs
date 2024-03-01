@@ -10,16 +10,18 @@ public class RespExpression
     {
         Value = value.ToList();
     }
-
-    private Command Command => Value[2].Equals("ping", StringComparison.OrdinalIgnoreCase) ? Command.Ping :
-        Value[2].Equals("echo", StringComparison.OrdinalIgnoreCase) ? Command.Echo :
-        Value[2].Equals("set", StringComparison.OrdinalIgnoreCase) ? Command.Set :
-        Value[2].Equals("get", StringComparison.OrdinalIgnoreCase) ? Command.Get :
-        Value[2].Equals("info", StringComparison.OrdinalIgnoreCase) ? Command.Info :
-        Value[2].Equals("replconf", StringComparison.OrdinalIgnoreCase) ? Command.Replconf :
-        Value[2].Equals("psync", StringComparison.OrdinalIgnoreCase) ? Command.Psync :
-        throw new ArgumentOutOfRangeException();
     
+    private Command Command => Value[2].ToLowerInvariant() switch
+    {
+        "ping" => Command.Ping,
+        "echo" => Command.Echo,
+        "set" => Command.Set,
+        "get" => Command.Get,
+        "info" => Command.Info,
+        "replconf" => Command.Replconf,
+        "psync" => Command.Psync,
+        _ => throw new ArgumentOutOfRangeException()
+    };
 
     public string GetMessage(Store store) => Command switch
     {
@@ -34,13 +36,11 @@ public class RespExpression
 
     private string HandleReplCommand()
     {
-        Console.WriteLine($"Recibiendo RESPLCONF...");
         return Resp.SimpleEncode("OK");
     }
 
     private string HandlePingCommand()
     {
-        Console.WriteLine($"Recibiendo PING...");
         return Resp.SimpleEncode("PONG");
     }
 
