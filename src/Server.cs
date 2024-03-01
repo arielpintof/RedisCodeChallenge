@@ -33,7 +33,7 @@ public static class Server
                     var expression = Resp.Decode(data);
                     var message = expression.GetMessage(store);
                     await stream.WriteAsync(Encoding.UTF8.GetBytes(message));
-                    //received = stream.Read(buffer);
+                    received = stream.Read(buffer);
                 }
                
             });
