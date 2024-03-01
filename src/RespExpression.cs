@@ -38,9 +38,14 @@ public class RespExpression
         }
     };
 
-    private string HandlePsyncCommand()
+    private IEnumerable<string> HandlePsyncCommand()
     {
-        return Resp.SimpleEncode($"FULLRESYNC {ServerSettings.MasterId} 0");
+        var emptyRdb = ServerSettings.EmptyRdb.ToBinary().ToString();
+        return new List<string>
+        {
+            Resp.SimpleEncode($"FULLRESYNC {ServerSettings.MasterId} 0"),
+            $"${emptyRdb!.Length}{Resp.Separator}{emptyRdb}"
+        };
     }
 
     private string HandleReplCommand()
