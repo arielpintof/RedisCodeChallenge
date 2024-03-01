@@ -32,8 +32,11 @@ public static class Server
                 {
                     var data = Encoding.UTF8.GetString(buffer);
                     var expression = Resp.Decode(data);
-                    var message = expression.GetMessage(store);
-                    await stream.WriteAsync(Encoding.UTF8.GetBytes(message));
+                    var messages = expression.GetMessage(store);
+                    foreach (var message in messages)
+                    {
+                        await stream.WriteAsync(message.AsByte());
+                    }
                     received = stream.Read(buffer);
                 }
                

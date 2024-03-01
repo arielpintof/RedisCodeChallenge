@@ -12,6 +12,9 @@ public static class ServerSettings
     public static string MasterId { get; set; } = "8371b4fb1155b71f4a04d3e1bc3e18c4a990aeeb";
     public static string MasterHost { get; set; }
     public static int MasterPort { get; set; }
+
+    public static string EmptyRdb { get; } =
+        "UkVESVMwMDEx+glyZWRpcy12ZXIFNy4yLjD6CnJlZGlzLWJpdHPAQPoFY3RpbWXCbQi8ZfoIdXNlZC1tZW3CsMQQAPoIYW9mLWJhc2XAAP/wbjv+wP9aog==";
     
 
     public static Task Configure(string[] args)

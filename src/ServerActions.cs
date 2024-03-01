@@ -32,14 +32,20 @@ public static class ServerActions
     }
     
     
-    private static byte[] EncodePing => Encoding.UTF8.GetBytes(Resp.ArrayEncode(new List<string>{"Ping"}));
+    private static byte[] EncodePing => Resp.ArrayEncode(new List<string>{"Ping"}).AsByte();
 
-    private static byte[] EncodePort =>  Encoding.UTF8.GetBytes(
-        Resp.ArrayEncode(new List<string> { "REPLCONF", "listening-port", ServerSettings.Port.ToString() }));
+    private static byte[] EncodePort => Resp.ArrayEncode(new List<string> { "REPLCONF", "listening-port", ServerSettings.Port.ToString() }).AsByte();
 
-    private static byte[] EncodeCapa => Encoding.UTF8.GetBytes(
-        Resp.ArrayEncode(new List<string> { "REPLCONF", "capa", "psync2" }));
+    private static byte[] EncodeCapa => Resp.ArrayEncode(new List<string> { "REPLCONF", "capa", "psync2" }).AsByte();
 
-    private static byte[] EncodePsync => Encoding.UTF8.GetBytes(
-        Resp.ArrayEncode(new List<string> { "PSYNC", "?", "-1" }));
+    private static byte[] EncodePsync => Resp.ArrayEncode(new List<string> { "PSYNC", "?", "-1" }).AsByte();
+}
+
+public static class StringExtension
+{
+    public static byte[] AsByte(this string value) => Encoding.UTF8.GetBytes(value).ToArray();
+    
+    public static byte[] ToBinary(this string value) => Convert.FromBase64String(value);
+
+    
 }

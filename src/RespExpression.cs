@@ -23,16 +23,19 @@ public class RespExpression
         _ => throw new ArgumentOutOfRangeException()
     };
 
-    public string GetMessage(Store store) => Command switch
+    public IEnumerable<string> GetMessage(Store store) => new[]
     {
-        Command.Ping => HandlePingCommand(),
-        Command.Echo => Resp.BulkEncode(Value[4]),
-        Command.Set => HandleSetCommand(store),
-        Command.Get => HandleGetCommand(store),
-        Command.Info => HandleInfoCommand(),
-        Command.Replconf => HandleReplCommand(),
-        Command.Psync => HandlePsyncCommand(),
-        _ => throw new ArgumentOutOfRangeException()
+        Command switch
+        {
+            Command.Ping => HandlePingCommand(),
+            Command.Echo => Resp.BulkEncode(Value[4]),
+            Command.Set => HandleSetCommand(store),
+            Command.Get => HandleGetCommand(store),
+            Command.Info => HandleInfoCommand(),
+            Command.Replconf => HandleReplCommand(),
+            Command.Psync => HandlePsyncCommand(),
+            _ => throw new ArgumentOutOfRangeException()
+        }
     };
 
     private string HandlePsyncCommand()
