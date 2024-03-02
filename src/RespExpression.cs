@@ -39,6 +39,7 @@ public class RespExpression
     private IEnumerable<string> HandlePsyncCommand()
     {
         var emptyRdb = ServerSettings.EmptyRdb.ToBinary();
+        Console.WriteLine($"Lenght: {Encoding.UTF8.GetString(emptyRdb).Length} ");
 
         var response = new List<string>
         {
