@@ -46,7 +46,7 @@ public class RespExpression
             $"${emptyRdb.Length}{Resp.Separator}{Encoding.UTF8.GetString(emptyRdb)}"
         };
 
-        return new List<string>{string.Join("", response)};
+        return response;
     }
 
     private IEnumerable<string> HandleReplCommand()

@@ -13,13 +13,9 @@ public static class ServerSettings
     public static string MasterHost { get; set; }
     public static int MasterPort { get; set; }
 
-    public static string EmptyRdb { get; } =
+    public const string EmptyRdb =
         "UkVESVMwMDEx+glyZWRpcy12ZXIFNy4yLjD6CnJlZGlzLWJpdHPAQPoFY3RpbWXCbQi8ZfoIdXNlZC1tZW3CsMQQAPoIYW9mLWJhc2XAAP/wbjv+wP9aog==";
     
-    
-
-    
-
     public static Task Configure(string[] args)
     {
         var portIndex = Array.IndexOf(args, "--port");
