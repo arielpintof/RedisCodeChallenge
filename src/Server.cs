@@ -40,7 +40,10 @@ public static class Server
                     received = stream.Read(buffer);
                 }
                
+                
             });
+            
+            Console.WriteLine("Conexión terminada");
 
         }
     }
