@@ -13,7 +13,6 @@ public static class ServerActions
     {
         var buffer = new byte[1024];
         using var client = new TcpClient();
-        Console.WriteLine($"Sending to Port: {ServerSettings.MasterPort}");
         await client.ConnectAsync(EndPoint);
         
         var stream = client.GetStream();
