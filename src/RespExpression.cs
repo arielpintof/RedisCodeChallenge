@@ -39,12 +39,11 @@ public class RespExpression
     private IEnumerable<string> HandlePsyncCommand()
     {
         var emptyRdb = ServerSettings.EmptyRdb.ToBinary();
-        var binaryLength = Convert.ToString(emptyRdb.Length).PadLeft(8,'0');
 
         var response = new List<string>
         {
             Resp.SimpleEncode($"FULLRESYNC {ServerSettings.MasterId} 0"),
-            $"${binaryLength}{Resp.Separator}{emptyRdb}"
+            $"${Encoding.UTF8.GetString(emptyRdb).Length}{Resp.Separator}{Encoding.UTF8.GetString(emptyRdb)}"
         };
 
         return response;
