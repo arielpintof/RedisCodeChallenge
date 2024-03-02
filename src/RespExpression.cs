@@ -69,11 +69,11 @@ public class RespExpression
         if (!this.ValueHas("info") && !this.ValueHas("replication"))
             return new List<byte[]> { Resp.BulkEncode($"role:{ServerSettings.Role}").AsByte() };
 
-        var response = new List<byte[]>
+        var response = new List<string>
         {
-            $"role:{ServerSettings.Role}".AsByte(),
-            $"master_replid:{ServerSettings.MasterId}".AsByte(),
-            "master_repl_offset:0".AsByte()
+            $"role:{ServerSettings.Role}",
+            $"master_replid:{ServerSettings.MasterId}",
+            "master_repl_offset:0"
         };
 
         return new List<byte[]> { Resp.BulkEncode(string.Join(Resp.Separator, response)).AsByte() };
