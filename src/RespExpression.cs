@@ -44,7 +44,7 @@ public class RespExpression
         var response = new List<byte[]>
         {
             Resp.SimpleEncode($"FULLRESYNC {ServerSettings.MasterId} 0").AsByte(),
-            $"${Encoding.UTF8.GetString(emptyRdb).Length}{Resp.Separator}{Encoding.UTF8.GetString(emptyRdb)}".AsByte()
+            $"${emptyRdb.Length}\r\n".AsByte().Concat(emptyRdb).ToArray()
         };
 
         return response;
