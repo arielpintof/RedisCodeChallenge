@@ -23,11 +23,11 @@ public class RespExpression
         _ => throw new ArgumentOutOfRangeException()
     };
 
-    public IEnumerable<string> GetMessage(Store store) =>
+    public IEnumerable<byte[]> GetMessage(Store store) =>
         Command switch
         {
             Command.Ping => HandlePingCommand(),
-            Command.Echo => new List<string>{Resp.BulkEncode(Value[4])},
+            Command.Echo => new List<byte[]>{Resp.BulkEncode(Value[4]).AsByte()},
             Command.Set => HandleSetCommand(store),
             Command.Get => HandleGetCommand(store),
             Command.Info => HandleInfoCommand(),
@@ -36,63 +36,63 @@ public class RespExpression
             _ => throw new ArgumentOutOfRangeException()
         };
 
-    private IEnumerable<string> HandlePsyncCommand()
+    private IEnumerable<byte[]> HandlePsyncCommand()
     {
         var emptyRdb = ServerSettings.EmptyRdb.ToBinary();
         Console.WriteLine($"Lenght: {Encoding.UTF8.GetString(emptyRdb).Length} ");
 
-        var response = new List<string>
+        var response = new List<byte[]>
         {
-            Resp.SimpleEncode($"FULLRESYNC {ServerSettings.MasterId} 0"),
-            $"${Encoding.UTF8.GetString(emptyRdb).Length}{Resp.Separator}{Encoding.UTF8.GetString(emptyRdb)}"
+            Resp.SimpleEncode($"FULLRESYNC {ServerSettings.MasterId} 0").AsByte(),
+            $"${Encoding.UTF8.GetString(emptyRdb).Length}{Resp.Separator}{Encoding.UTF8.GetString(emptyRdb)}".AsByte()
         };
 
         return response;
     }
 
-    private IEnumerable<string> HandleReplCommand()
+    private IEnumerable<byte[]> HandleReplCommand()
     {
-        return new List<string>
+        return new List<byte[]>
         {
-            Resp.SimpleEncode("OK")
+            Resp.SimpleEncode("OK").AsByte()
         };
     }
 
-    private IEnumerable<string> HandlePingCommand()
+    private IEnumerable<byte[]> HandlePingCommand()
     {
-        return new List<string>
-            { Resp.SimpleEncode("PONG") };
+        return new List<byte[]>
+            { Resp.SimpleEncode("PONG").AsByte() };
     }
 
-    private IEnumerable<string> HandleInfoCommand()
+    private IEnumerable<byte[]> HandleInfoCommand()
     {
         if (!this.ValueHas("info") && !this.ValueHas("replication"))
-            return new List<string> { Resp.BulkEncode($"role:{ServerSettings.Role}") };
+            return new List<byte[]> { Resp.BulkEncode($"role:{ServerSettings.Role}").AsByte() };
 
-        var response = new List<string>
+        var response = new List<byte[]>
         {
-            $"role:{ServerSettings.Role}",
-            $"master_replid:{ServerSettings.MasterId}",
-            "master_repl_offset:0"
+            $"role:{ServerSettings.Role}".AsByte(),
+            $"master_replid:{ServerSettings.MasterId}".AsByte(),
+            "master_repl_offset:0".AsByte()
         };
 
-        return new List<string> { Resp.BulkEncode(string.Join(Resp.Separator, response)) };
+        return new List<byte[]> { Resp.BulkEncode(string.Join(Resp.Separator, response)).AsByte() };
     }
 
 
-    private IEnumerable<string> HandleSetCommand(Store store)
+    private IEnumerable<byte[]> HandleSetCommand(Store store)
     {
         var expiration = TryGetArgument("px", out var expirationValue)
             ? int.Parse(expirationValue)
             : 0;
 
-        return new List<string> { store.Set(GetKey, GetValue, expiration) ? Resp.SimpleEncode("OK") : "null" };
+        return new List<byte[]> { store.Set(GetKey, GetValue, expiration) ? Resp.SimpleEncode("OK").AsByte() : "null".AsByte() };
     }
 
-    private IEnumerable<string> HandleGetCommand(Store store)
+    private IEnumerable<byte[]> HandleGetCommand(Store store)
     {
         var value = store.GetValue(GetKey);
-        return new List<string> { value!.Length > 0 ? Resp.BulkEncode(value) : Resp.NullEncode() };
+        return new List<byte[]> { value!.Length > 0 ? Resp.BulkEncode(value).AsByte() : Resp.NullEncode().AsByte() };
     }
 
     private string GetKey => Value[4];

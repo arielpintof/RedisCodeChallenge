@@ -35,7 +35,7 @@ public static class Server
                     var messages = expression.GetMessage(store);
                     foreach (var message in messages)
                     {
-                        await stream.WriteAsync(message.AsByte());
+                        await stream.WriteAsync(message);
                     }
                     received = stream.Read(buffer);
                 }
