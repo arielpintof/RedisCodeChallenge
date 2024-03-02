@@ -44,7 +44,7 @@ public class RespExpression
         var response = new List<string>
         {
             Resp.SimpleEncode($"FULLRESYNC {ServerSettings.MasterId} 0"),
-            $"${binaryLength}{Resp.Separator}{Encoding.UTF8.GetString(emptyRdb)}"
+            $"${binaryLength}{Resp.Separator}{emptyRdb}"
         };
 
         return response;
