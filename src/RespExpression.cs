@@ -1,4 +1,6 @@
-﻿namespace codecrafters_redis;
+﻿using System.Text;
+
+namespace codecrafters_redis;
 
 public class RespExpression
 {
@@ -37,11 +39,11 @@ public class RespExpression
     private IEnumerable<string> HandlePsyncCommand()
     {
         var emptyRdb = ServerSettings.EmptyRdb.ToBinary();
-        Console.WriteLine(emptyRdb);
+        Console.WriteLine(Encoding.UTF8.GetString(emptyRdb));
         var response = new List<string>
         {
             Resp.SimpleEncode($"FULLRESYNC {ServerSettings.MasterId} 0"),
-            $"${emptyRdb.Length}{Resp.Separator}{emptyRdb}"
+            $"${emptyRdb.Length}{Resp.Separator}{Encoding.UTF8.GetString(emptyRdb)}"
         };
 
         return new List<string>{string.Join("", response)};
