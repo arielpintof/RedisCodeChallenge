@@ -13,7 +13,7 @@ public class RespExpression
 
     private Command Command => Value[2].ToLowerInvariant() switch
     {
-        "Ping" => Command.Ping,
+        "ping" => Command.Ping,
         "echo" => Command.Echo,
         "set" => Command.Set,
         "get" => Command.Get,
