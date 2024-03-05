@@ -1,6 +1,6 @@
 ﻿namespace codecrafters_redis;
 
-public enum CommandOption
+public enum ExpirationType
 {
     None,
     Px,
