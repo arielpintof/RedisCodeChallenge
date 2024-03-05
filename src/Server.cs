@@ -18,12 +18,11 @@ while (true)
 {
     var store = new Store();
     var client = await server.AcceptTcpClientAsync();
-
-    _ = HandleClient(client, store);
     
+    new Thread(() => HandleClient(client, store)).Start();
 }
 
-async Task HandleClient(TcpClient client, Store store)
+async void HandleClient(TcpClient client, Store store)
 {
     var buffer = new byte[1024];
     var stream = client.GetStream();
