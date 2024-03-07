@@ -8,7 +8,7 @@ public class RespExpression
 
     public RespExpression(IEnumerable<string> value)
     {
-        Value = value.ToList();
+        Value = value.Select(e => e.ToLowerInvariant()).ToList();
     }
 
     private Command Command => Value[2].ToLowerInvariant() switch
@@ -52,6 +52,11 @@ public class RespExpression
 
     private IEnumerable<byte[]> HandleReplCommand()
     {
+        if (Value[4].ToLowerInvariant().Equals("listening-port"))
+        {
+            ServerSettings.AddReplicaPort(Value[6]);
+        }
+        
         return new List<byte[]>
         {
             Resp.SimpleEncode("OK").AsByte()
@@ -85,6 +90,8 @@ public class RespExpression
         var expiration = TryGetArgument("px", out var expirationValue)
             ? int.Parse(expirationValue)
             : 0;
+        
+        Propagation.AddCommand(string.Join("", Value));
 
         return new List<byte[]> { store.Set(GetKey, GetValue, expiration) ? Resp.SimpleEncode("OK").AsByte() : "null".AsByte() };
     }

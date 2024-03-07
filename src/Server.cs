@@ -40,4 +40,9 @@ async void HandleClient(TcpClient client, Store store)
 
         received = stream.Read(buffer);
     }
+
+    if (ServerSettings.IsMaster())
+    {
+        await Propagation.Propagate();
+    }
 }

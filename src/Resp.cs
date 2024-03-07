@@ -1,4 +1,6 @@
-﻿namespace codecrafters_redis;
+﻿using System.Reflection.Metadata.Ecma335;
+
+namespace codecrafters_redis;
 
 public static class Resp
 {
@@ -27,6 +29,15 @@ public static class Resp
     public static string ArrayEncode(List<string> value)
     {
         var elements = value.Select(element => $"${element.Length}{Separator}{element}{Separator}").ToList();
+        var joinedElements = string.Join("", elements);
+        
+        Console.Write($"*{value.Count}{Separator}{joinedElements}");
+        return $"*{value.Count}{Separator}{joinedElements}";
+    }
+
+    public static string SetEncode(List<string> value)
+    {
+        var elements = value.Select(element => $"{element.Length}{Separator}{element}{Separator}").ToList();
         var joinedElements = string.Join("", elements);
         
         Console.Write($"*{value.Count}{Separator}{joinedElements}");

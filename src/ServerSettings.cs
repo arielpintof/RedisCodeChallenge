@@ -13,6 +13,8 @@ public static class ServerSettings
     public static string MasterHost { get; set; }
     public static int MasterPort { get; set; }
 
+    public static List<string> Replicas { get; set; } = new();
+
     public const string EmptyRdb =
         "UkVESVMwMDEx+glyZWRpcy12ZXIFNy4yLjD6CnJlZGlzLWJpdHPAQPoFY3RpbWXCbQi8ZfoIdXNlZC1tZW3CsMQQAPoIYW9mLWJhc2XAAP/wbjv+wP9aog==";
     
@@ -31,14 +33,18 @@ public static class ServerSettings
             MasterHost = args[roleIndex + 1];
             MasterPort = int.Parse(args[roleIndex + 2]);
         }
+        
 
         return Task.CompletedTask;
     }
 
     public static bool IsMaster() => Role.Equals("master");
 
+    public static void AddReplicaPort(string port) => Replicas.Add(port);
     
-    
+
+
+
 
 
 
