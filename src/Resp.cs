@@ -31,7 +31,6 @@ public static class Resp
         var elements = value.Select(element => $"${element.Length}{Separator}{element}{Separator}").ToList();
         var joinedElements = string.Join("", elements);
         
-        Console.Write($"*{value.Count}{Separator}{joinedElements}");
         return $"*{value.Count}{Separator}{joinedElements}";
     }
 
@@ -40,7 +39,6 @@ public static class Resp
         var elements = value.Select(element => $"{element.Length}{Separator}{element}{Separator}").ToList();
         var joinedElements = string.Join("", elements);
         
-        Console.Write($"*{value.Count}{Separator}{joinedElements}");
         return $"*{value.Count}{Separator}{joinedElements}";
     }
 }

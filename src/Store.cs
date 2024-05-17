@@ -1,10 +1,5 @@
-﻿using System.Collections.Concurrent;
+﻿namespace codecrafters_redis;
 
-namespace codecrafters_redis;
-
-
-//Clave valor
-//Operaciones Set y Get
 public class Store
 {
     private readonly Dictionary<string, Data> _storeValues = new();
